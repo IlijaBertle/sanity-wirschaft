@@ -2,14 +2,14 @@ import { defineType, defineField } from "sanity";
 
 export default defineType({
   name: "event",
-  title: "Event",
+  title: "Beitrag / Event",
   type: "document",
   fields: [
     defineField({
       name: "title",
       title: "Titel",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(3),
     }),
 
     defineField({
@@ -18,6 +18,7 @@ export default defineType({
       type: "slug",
       options: {
         source: "title",
+        maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
     }),
@@ -26,27 +27,67 @@ export default defineType({
       name: "date",
       title: "Datum",
       type: "datetime",
+      initialValue: () => new Date().toISOString(),
     }),
 
     defineField({
       name: "caption",
       title: "Kurzbeschreibung",
-      type: "string",
+      type: "text",
+      rows: 3,
+      validation: (Rule) => Rule.max(240).warning("Die Kurzbeschreibung sollte kurz gehalten sein."),
     }),
 
     defineField({
       name: "description",
       title: "Beschreibung",
       type: "text",
+      rows: 10,
     }),
 
     defineField({
       name: "image",
-      title: "Bild",
+      title: "Hauptbild",
       type: "image",
       options: {
         hotspot: true,
       },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alternativtext",
+          type: "string",
+        }),
+      ],
+    }),
+
+    defineField({
+      name: "gallery",
+      title: "Weitere Bilder",
+      type: "array",
+      of: [
+        {
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alternativtext",
+              type: "string",
+            }),
+          ],
+        },
+      ],
     }),
   ],
+
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "caption",
+      media: "image",
+    },
+  },
 });
