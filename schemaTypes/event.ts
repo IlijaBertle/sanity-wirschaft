@@ -24,6 +24,21 @@ export default defineType({
     }),
 
     defineField({
+      name: "contentType",
+      title: "Typ",
+      type: "string",
+      initialValue: "blog",
+      options: {
+        list: [
+          { title: "Blog-Eintrag", value: "blog" },
+          { title: "Event", value: "event" },
+        ],
+        layout: "radio",
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
       name: "date",
       title: "Datum",
       type: "datetime",
