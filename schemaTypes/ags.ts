@@ -1,13 +1,13 @@
 import { defineType, defineField } from "sanity";
 
 export default defineType({
-  name: "event",
-  title: "Beitrag / Event",
+  name: "ags",
+  title: "ags",
   type: "document",
   fields: [
     defineField({
       name: "title",
-      title: "Titel",
+      title: "Name",
       type: "string",
       validation: (Rule) => Rule.required().min(3),
     }),
@@ -24,30 +24,8 @@ export default defineType({
     }),
 
     defineField({
-      name: "ags",
-      title: "Ausgetragen von... (AG)",
-      type: "reference",
-      to: [{ type: "ags" }],
-    }),
-
-    defineField({
-      name: "contentType",
-      title: "Typ",
-      type: "string",
-      initialValue: "blog",
-      options: {
-        list: [
-          { title: "Blog-Eintrag", value: "blog" },
-          { title: "Event", value: "event" },
-        ],
-        layout: "radio",
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-
-    defineField({
       name: "date",
-      title: "Datum",
+      title: "AG seit",
       type: "datetime",
       initialValue: () => new Date().toISOString(),
     }),
